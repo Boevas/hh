@@ -1,0 +1,10 @@
+﻿@model Department
+
+@{
+    foreach (var prop in Model.GetType().GetProperties())
+    {
+        <th>
+            @prop.GetValue(Model, null)
+        </th>
+    }
+}

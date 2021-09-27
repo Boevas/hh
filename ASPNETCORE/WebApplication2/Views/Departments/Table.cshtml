@@ -1,0 +1,28 @@
+﻿<style type="text/css">
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+@using System.Reflection
+
+@model IEnumerable<Department>
+<table style="width:100%">
+    @{
+        <tr>
+            @{
+                foreach (PropertyInfo prop in Model.First().GetType().GetProperties())
+                {
+                    <th>@prop.Name</th>
+                }
+            }
+        </tr>
+
+
+        foreach (Department dep in Model)
+        {
+            <tr>
+                @await Html.PartialAsync("TableRow", dep)
+            </tr>
+        }
+    }
+</table>

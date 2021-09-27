@@ -1,0 +1,5 @@
+{
+    "Project": {
+        "ConnectionString": "Host=localhost;Port=5432;Database=usersdb;Username=postgres;Password=postgree"
+    }
+}

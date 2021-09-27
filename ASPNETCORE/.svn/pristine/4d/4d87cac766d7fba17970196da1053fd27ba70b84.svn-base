@@ -1,0 +1,7 @@
+.vs/
+WebApplication2/.vs/
+WebApplication2/bin/
+WebApplication2/obj/
+WebApplication2.Tests.XUnit/.vs/
+WebApplication2.Tests.XUnit/bin/
+WebApplication2.Tests.XUnit/obj/
