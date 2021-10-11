@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WebApplication2.Service;
 using Microsoft.Extensions.Caching.Memory;
+using WebApplication2.MiddleWare.LoggerManager;
 
 namespace WebApplication2
 {
@@ -45,7 +46,7 @@ namespace WebApplication2
                 services.AddScoped<IRepository<User>, UsersRepositoryDB>();
                 services.AddScoped<IRepository<Department>, DepartmentsRepositoryDB>();
 
-                //services.AddTransient<ILogger, Logger>();
+                services.AddSingleton<ILoggerManager, LoggerManagerNLog>();
                 services.AddTransient<LogRequest>();
                 
                 services.AddControllers();

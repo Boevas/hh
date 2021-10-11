@@ -7,6 +7,7 @@ using System.Diagnostics;
 
 
 using NLog;
+using WebApplication2.MiddleWare.LoggerManager;
 //using Microsoft.Extensions.Logging;
 
 
@@ -14,8 +15,10 @@ namespace WebApplication2.MiddleWare
 {
     public class LogRequest : IMiddleware
     {
-        public LogRequest()
+        protected readonly ILoggerManager log;
+        public LogRequest(ILoggerManager _log)
         {
+            log = _log;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -30,7 +33,7 @@ namespace WebApplication2.MiddleWare
                 TimeSpan ts = stopWatch.Elapsed;
                 if (ts.TotalSeconds > 1)
                 {
-                    LogManager.GetCurrentClassLogger().Warn
+                    log.LogWarning
                     (
                         $"Request{GetDetailsHttpRequest(context.Request)}" +
                         $"\nElapsedTime: {ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}"
@@ -39,7 +42,7 @@ namespace WebApplication2.MiddleWare
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
             }
         }
 
@@ -64,7 +67,7 @@ namespace WebApplication2.MiddleWare
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return null;
             }
         }
