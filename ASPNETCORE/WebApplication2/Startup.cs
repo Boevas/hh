@@ -4,14 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using NLog;
-using System.Diagnostics;
-using System.Text;
-
-using System.IO;
+using WebApplication2.MiddleWare;
 using WebApplication2.Models;
 using WebApplication2.Controllers;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +45,9 @@ namespace WebApplication2
                 services.AddScoped<IRepository<User>, UsersRepositoryDB>();
                 services.AddScoped<IRepository<Department>, DepartmentsRepositoryDB>();
 
+                //services.AddTransient<ILogger, Logger>();
+                services.AddTransient<LogRequest>();
+                
                 services.AddControllers();
             }
             catch (Exception ex)
@@ -58,31 +55,7 @@ namespace WebApplication2
                 LogManager.GetCurrentClassLogger().Error(ex.ToString());
             }
         }
-        private string GetDetailsHttpRequest(HttpRequest request)
-        {
-            try 
-            { 
-                string baseUrl = $"{request.Scheme}://{request.Host}{request.Path}{request.QueryString.Value}";
-                StringBuilder sbHeaders = new StringBuilder();
-                foreach (var header in request.Headers)
-                    sbHeaders.Append($"{header.Key}: {header.Value}\n");
 
-                string body = "no-body";
-                if (request.Body.CanSeek)
-                {
-                    request.Body.Seek(0, SeekOrigin.Begin);
-                    using StreamReader sr = new StreamReader(request.Body);
-                    body = sr.ReadToEnd();
-                }
-
-                return $"{request.Protocol} {request.Method} {baseUrl}\n\n{sbHeaders}\n{body}";
-            }
-            catch (Exception ex)
-            {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
-                return null;
-            }
-        }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             try
@@ -95,27 +68,8 @@ namespace WebApplication2
                 app.UseRouting();
                 app.UseStaticFiles();
 
-
-
                 //Логирование запросов длительностью > 1 сек.
-                app.Use(async (context, next)=>
-                    {
-                        Stopwatch stopWatch = new Stopwatch();
-                        stopWatch.Start();
-                        await next();
-                        stopWatch.Stop();
-
-                        TimeSpan ts = stopWatch.Elapsed;
-                        if (ts.TotalSeconds > 1)
-                        {
-                            LogManager.GetCurrentClassLogger().Warn
-                            (
-                                $"Request{GetDetailsHttpRequest(context.Request)}" +
-                                $"\nElapsedTime: {ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}"
-                            );
-                        }
-                    }
-                );
+                app.UseMiddleware<LogRequest>();
 
                 app.UseEndpoints(endpoints =>
                 {
