@@ -29,14 +29,18 @@ namespace WebApplication2
             {
                 Configuration.Bind("Project", new Config());
 
+                services.AddMemoryCache();
+                services.AddSingleton<ILoggerManager, LoggerManagerNLog>();
+
                 services.AddHostedService
                     (serviceProvider =>
                         new PeriodicBackgroundService
                         (
-                            serviceProvider.GetService<IMemoryCache>(), new PeriodicBackgroundServiceConfig{ Timeout = 1 * 60 * 60 * 1000 /* часы * мин * сек * милисек*/}
+                            new PeriodicBackgroundServiceConfig{ Timeout = 1 * 60 * 60 * 1000 /* часы * мин * сек * милисек*/},
+                            serviceProvider.GetService<ILoggerManager>(),
+                            serviceProvider.GetService<IMemoryCache>()
                         )
                     );
-                services.AddMemoryCache();
 
                 services.AddDbContext<AppContextDB>(options =>
                 options.UseNpgsql(Config.ConnectionString));
@@ -46,7 +50,6 @@ namespace WebApplication2
                 services.AddScoped<IRepository<User>, UsersRepositoryDB>();
                 services.AddScoped<IRepository<Department>, DepartmentsRepositoryDB>();
 
-                services.AddSingleton<ILoggerManager, LoggerManagerNLog>();
                 services.AddTransient<LogRequest>();
                 
                 services.AddControllers();

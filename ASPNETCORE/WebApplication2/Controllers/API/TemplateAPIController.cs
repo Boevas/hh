@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication2.Models;
 using NLog;
+using WebApplication2.MiddleWare.LoggerManager;
 
 namespace WebApplication2.Controllers
 {
@@ -14,16 +15,11 @@ namespace WebApplication2.Controllers
     public class TemplateAPIController<T>: Controller
     {
         private readonly IRepository<T> IRep;
-        public TemplateAPIController(IRepository<T> _IRep) : base()
+        private readonly ILoggerManager log;
+        public TemplateAPIController(IRepository<T> _IRep, ILoggerManager _log) : base()
         {
-            try
-            {
-                IRep = _IRep;
-            }
-            catch (Exception ex)
-            {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
-            }
+            this.IRep = _IRep;
+            this.log = _log;
         }
 
         //GET: api/Users
@@ -36,7 +32,7 @@ namespace WebApplication2.Controllers
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return null;
             }
         }
@@ -54,7 +50,7 @@ namespace WebApplication2.Controllers
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return null;
             }
         }
@@ -73,7 +69,7 @@ namespace WebApplication2.Controllers
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return null;
             }
         }
@@ -92,7 +88,7 @@ namespace WebApplication2.Controllers
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return null;
             }
         }
@@ -111,7 +107,7 @@ namespace WebApplication2.Controllers
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return null;
             }
         }
