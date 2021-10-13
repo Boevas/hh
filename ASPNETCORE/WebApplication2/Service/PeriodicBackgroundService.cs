@@ -43,7 +43,7 @@ namespace WebApplication2.Service
                     catch { }
                     finally
                     {
-                        await Task.Delay(config.MiddlewareRequestTimeoutMilliseconds, stoppingToken);
+                        await Task.Delay(config.PeriodicBackgroundServiceTimeoutMilliseconds, stoppingToken);
                     }
                 }
             }
