@@ -29,7 +29,7 @@ namespace WebApplication2
             {
                 //appsettings.json -> Class Config & IOptions<Config>
                 {
-                    //Configuration.Bind("Project", new Config());
+                    //Configuration.Bind ("Project", new Config());
                     services.Configure<Config>(Configuration.GetSection("Project"));
                     services.AddSingleton<Config>();
 
@@ -44,15 +44,7 @@ namespace WebApplication2
                 //BackgroundService with Cache
                 {
                     services.AddMemoryCache();
-                    services.AddHostedService
-                        (serviceProvider =>
-                            new PeriodicBackgroundService
-                            (
-                                new PeriodicBackgroundServiceConfig { Timeout = 1 * 60 * 60 * 1000 /* часы * мин * сек * милисек*/},
-                                serviceProvider.GetService<ILoggerManager>(),
-                                serviceProvider.GetService<IMemoryCache>()
-                            )
-                        );
+                    services.AddHostedService<PeriodicBackgroundService>();
                 }
 
                 //Business

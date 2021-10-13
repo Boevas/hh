@@ -17,7 +17,7 @@ namespace WebApplication2.MiddleWare
 {
     public class MiddlewareRequestTimeout : IMiddleware
     {
-        protected readonly ILoggerManager log;
+        private readonly ILoggerManager log;
         private readonly Config config;
 
         public MiddlewareRequestTimeout( ILoggerManager _log, IOptions<Config> config)

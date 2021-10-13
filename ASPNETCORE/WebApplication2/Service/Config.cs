@@ -9,5 +9,6 @@ namespace WebApplication2.Service
     { 
         public string ConnectionString{ get; set; }
         public int MiddlewareRequestTimeoutMilliseconds { get; set; }
+        public int PeriodicBackgroundServiceTimeoutMilliseconds { get; set; }
     }
 }
