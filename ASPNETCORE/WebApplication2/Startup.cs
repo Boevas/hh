@@ -57,8 +57,10 @@ namespace WebApplication2
 
                 //Business
                 {
-                    services.AddDbContext<AppContextDB>(options =>
-                    options.UseNpgsql(new Config().ConnectionString));
+                    services.AddDbContext<AppContextDB>((serviceProvider, options) =>
+                    {
+                        options.UseNpgsql(Configuration.GetSection("Project")["ConnectionString"]);
+                    });
 
                     services.AddMvc();
 
