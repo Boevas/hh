@@ -27,32 +27,51 @@ namespace WebApplication2
         {
             try
             {
-                Configuration.Bind("Project", new Config());
+                //appsettings.json -> Class Config & IOptions<Config>
+                {
+                    //Configuration.Bind("Project", new Config());
+                    services.Configure<Config>(Configuration.GetSection("Project"));
+                    services.AddSingleton<Config>();
 
-                services.AddMemoryCache();
-                services.AddSingleton<ILoggerManager, LoggerManagerNLog>();
+                    services.AddOptions();
+                }
 
-                services.AddHostedService
-                    (serviceProvider =>
-                        new PeriodicBackgroundService
-                        (
-                            new PeriodicBackgroundServiceConfig{ Timeout = 1 * 60 * 60 * 1000 /* часы * мин * сек * милисек*/},
-                            serviceProvider.GetService<ILoggerManager>(),
-                            serviceProvider.GetService<IMemoryCache>()
-                        )
-                    );
+                //Log
+                {
+                    services.AddSingleton<ILoggerManager, LoggerManagerNLog>();
+                }
 
-                services.AddDbContext<AppContextDB>(options =>
-                options.UseNpgsql(Config.ConnectionString));
+                //BackgroundService with Cache
+                {
+                    services.AddMemoryCache();
+                    services.AddHostedService
+                        (serviceProvider =>
+                            new PeriodicBackgroundService
+                            (
+                                new PeriodicBackgroundServiceConfig { Timeout = 1 * 60 * 60 * 1000 /* часы * мин * сек * милисек*/},
+                                serviceProvider.GetService<ILoggerManager>(),
+                                serviceProvider.GetService<IMemoryCache>()
+                            )
+                        );
+                }
 
-                services.AddMvc();
+                //Business
+                {
+                    services.AddDbContext<AppContextDB>(options =>
+                    options.UseNpgsql(new Config().ConnectionString));
 
-                services.AddScoped<IRepository<User>, UsersRepositoryDB>();
-                services.AddScoped<IRepository<Department>, DepartmentsRepositoryDB>();
+                    services.AddMvc();
 
-                services.AddTransient<LogRequest>();
-                
-                services.AddControllers();
+                    services.AddScoped<IRepository<User>, UsersRepositoryDB>();
+                    services.AddScoped<IRepository<Department>, DepartmentsRepositoryDB>();
+
+                    services.AddControllers();
+                }
+
+                //Middleware
+                {
+                    services.AddTransient<MiddlewareRequestTimeout>();
+                }
             }
             catch (Exception ex)
             {
@@ -68,12 +87,12 @@ namespace WebApplication2
                 {
                     app.UseDeveloperExceptionPage();
                 }
-
+                
                 app.UseRouting();
                 app.UseStaticFiles();
 
                 //Логирование запросов длительностью > 1 сек.
-                app.UseMiddleware<LogRequest>();
+                app.UseMiddleware<MiddlewareRequestTimeout>();
 
                 app.UseEndpoints(endpoints =>
                 {

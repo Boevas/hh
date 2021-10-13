@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
+using WebApplication2.MiddleWare.LoggerManager;
 namespace TestProject2
 {
     public class UsersControllerTests
@@ -19,7 +20,7 @@ namespace TestProject2
         public UsersControllerTests()
         {
             mockRepository = new Mock<IRepository<User>>();
-            Controller = new UsersController(mockRepository.Object);
+            Controller = new UsersController(mockRepository.Object, new LoggerManagerNLog());
         }
 
         #region Test_Get

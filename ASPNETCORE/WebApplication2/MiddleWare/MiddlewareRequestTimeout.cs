@@ -8,17 +8,22 @@ using System.Diagnostics;
 
 using NLog;
 using WebApplication2.MiddleWare.LoggerManager;
+using Microsoft.AspNetCore.Builder;
 //using Microsoft.Extensions.Logging;
-
+using Microsoft.Extensions.Options;
+using WebApplication2.Service;
 
 namespace WebApplication2.MiddleWare
 {
-    public class LogRequest : IMiddleware
+    public class MiddlewareRequestTimeout : IMiddleware
     {
         protected readonly ILoggerManager log;
-        public LogRequest(ILoggerManager _log)
+        private readonly Config config;
+
+        public MiddlewareRequestTimeout( ILoggerManager _log, IOptions<Config> config)
         {
-            log = _log;
+            this.log = _log;
+            this.config = config.Value;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -31,7 +36,7 @@ namespace WebApplication2.MiddleWare
                 stopWatch.Stop();
 
                 TimeSpan ts = stopWatch.Elapsed;
-                if (ts.TotalSeconds > 1)
+                if (ts.TotalMilliseconds > config.MiddlewareRequestTimeoutMilliseconds)
                 {
                     log.LogWarning
                     (
