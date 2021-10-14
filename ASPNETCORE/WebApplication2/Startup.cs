@@ -85,7 +85,7 @@ namespace WebApplication2
                 app.UseRouting();
                 app.UseStaticFiles();
 
-                //Логирование запросов длительностью > 1 сек.
+                //Логирование запросов длительностью > XX сек.
                 app.UseMiddleware<MiddlewareRequestTimeout>();
 
                 app.UseEndpoints(endpoints =>
