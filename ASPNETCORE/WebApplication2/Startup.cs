@@ -56,8 +56,8 @@ namespace WebApplication2
 
                     services.AddMvc();
 
-                    services.AddScoped<IRepository<User>, UsersRepositoryDB>();
-                    services.AddScoped<IRepository<Department>, DepartmentsRepositoryDB>();
+                    services.AddScoped<IRepository<User>, TemplateRepositoryDB<User>>();
+                    services.AddScoped<IRepository<Department>, TemplateRepositoryDB<Department>>();
 
                     services.AddControllers();
                 }
