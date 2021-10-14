@@ -15,7 +15,7 @@ namespace WebApplication2.Models
         private readonly DbContext db;
         private readonly DbSet<T> dbs;
         
-        public TemplateRepositoryDB(AppContextDB _db)
+        public TemplateRepositoryDB(DbContext _db)
         {
             try
             {
