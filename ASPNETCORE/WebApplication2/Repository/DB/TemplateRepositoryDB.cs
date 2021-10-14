@@ -6,6 +6,8 @@ using WebApplication2.Controllers;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+
 namespace WebApplication2.Models
 {
     public class TemplateRepositoryDB<T> : IRepository<T> where T : class
@@ -13,12 +15,19 @@ namespace WebApplication2.Models
         private readonly DbContext db;
         private readonly DbSet<T> dbs;
         
-        public TemplateRepositoryDB(DbContext _db, DbSet<T> _dbs)
+        public TemplateRepositoryDB(AppContextDB _db)
         {
             try
             {
                 db = _db;
-                dbs = _dbs;
+
+                //dbs = _dbs;
+                foreach (PropertyInfo prop in _db.GetType().GetProperties())
+                    if (prop.PropertyType == typeof(DbSet<T>))
+                    {
+                        dbs = prop.GetValue(_db, null) as DbSet<T>;
+                        break;
+                    }
             }
             catch (Exception ex)
             {
