@@ -9,15 +9,14 @@ using WebApplication2.MiddleWare.LoggerManager;
 //using Microsoft.Extensions.Logging;
 namespace WebApplication2.Controllers
 {
-    public class ViewTemplateAPIController<T> : TemplateAPIController<T>
+    /*
+    public class ViewTemplateAPIController<T> : APIController<T>
     {
-        private readonly IRepository<T> IRep;
         private readonly ILoggerManager log;
 
-        public ViewTemplateAPIController(IRepository<T> _IRep, ILoggerManager _log) : base(_IRep, _log)
+        public ViewTemplateAPIController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            this.IRep = _IRep;
-            this.log = _log;
+            this.log = (ILoggerManager)serviceProvider.GetService(typeof(ILoggerManager));
         }
 
         [HttpGet("/[controller]")]
@@ -34,4 +33,5 @@ namespace WebApplication2.Controllers
             }
         }
     }
+    */
 }

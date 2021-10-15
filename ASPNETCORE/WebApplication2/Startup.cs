@@ -60,6 +60,9 @@ namespace WebApplication2
                     services.AddScoped<IRepository<User>, TemplateRepositoryDB<User>>();
                     services.AddScoped<IRepository<Department>, TemplateRepositoryDB<Department>>();
 
+                    services.AddScoped<IApi<User>, APIController<User>>();
+                    services.AddScoped<IApi<Department>, APIController<Department>>();
+
                     services.AddControllers();
                 }
 
@@ -74,7 +77,7 @@ namespace WebApplication2
             }
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IServiceProvider serviceProvider,IApplicationBuilder app, IWebHostEnvironment env)
         {
             try
             {
@@ -82,7 +85,7 @@ namespace WebApplication2
                 {
                     app.UseDeveloperExceptionPage();
                 }
-                
+                //IApi<User> Iapi = (IApi<User>)serviceProvider.GetService(typeof(IApi<User>));
                 app.UseRouting();
                 app.UseStaticFiles();
 

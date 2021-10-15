@@ -12,14 +12,14 @@ namespace WebApplication2.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class TemplateAPIController<T>: Controller
+    public class TemplateController<T> : IApi<T>
     {
-        private readonly IRepository<T> IRep;
+        private readonly IApi<T> Iapi;
         private readonly ILoggerManager log;
-        public TemplateAPIController(IRepository<T> _IRep, ILoggerManager _log) : base()
+        public TemplateController(IServiceProvider serviceProvider)
         {
-            this.IRep = _IRep;
-            this.log = _log;
+            this.Iapi = (IApi<T>)serviceProvider.GetService(typeof(IApi<T>));
+            this.log = (ILoggerManager)serviceProvider.GetService(typeof(ILoggerManager));
         }
 
         //GET: api/Users
@@ -28,7 +28,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                return await IRep.Get();
+                return await Iapi.Get();
             }
             catch (Exception ex)
             {
@@ -36,17 +36,14 @@ namespace WebApplication2.Controllers
                 return null;
             }
         }
+
         //GET api/Users/1
         [HttpGet("{id}")]
         public async Task<ActionResult<T>> Get(int Id)
         {
             try
             {
-                var u = await IRep.Get(Id);
-                if (u is T)
-                    return Ok(u);
-
-                return NotFound();
+                return await Iapi.Get(Id);
             }
             catch (Exception ex)
             {
@@ -57,15 +54,11 @@ namespace WebApplication2.Controllers
 
         //POST api/Users
         [HttpPost]
-        public async Task<IActionResult> Post(T obj) 
+        public async Task<IActionResult> Post(T obj)
         {
             try
             {
-                var u = await IRep.Get(obj);
-                if (u is T)
-                    return Conflict(false);
-
-                return Ok(await IRep.Post(obj));
+                return await Iapi.Post(obj);
             }
             catch (Exception ex)
             {
@@ -80,11 +73,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                var u = await IRep.Get(obj);
-                if (u is T)
-                    return Ok(await IRep.Put(obj));
-
-                return NotFound();
+                return await Iapi.Put(obj);
             }
             catch (Exception ex)
             {
@@ -99,11 +88,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                var u = await IRep.Get(Id);
-                if (u is T)
-                    return Ok(await IRep.Delete(u));
-
-                return NotFound();
+                return await Iapi.Delete(Id);
             }
             catch (Exception ex)
             {

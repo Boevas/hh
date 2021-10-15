@@ -9,8 +9,8 @@ using WebApplication2.MiddleWare.LoggerManager;
 //using Microsoft.Extensions.Logging;
 namespace WebApplication2.Controllers
 {
-    public class DepartmentsController : ViewTemplateAPIController<Department>
+    public class DepartmentsController : TemplateController<Department>
     {
-        public DepartmentsController(IRepository<Department> _IRep, ILoggerManager _log) : base(_IRep, _log) { }
+        public DepartmentsController(IServiceProvider serviceProvider) : base(serviceProvider) { }
     }
 }
