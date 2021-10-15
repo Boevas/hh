@@ -20,9 +20,9 @@ namespace WebApplication2.MiddleWare
         private readonly ILoggerManager log;
         private readonly Config config;
 
-        public MiddlewareRequestTimeout( ILoggerManager _log, IOptions<Config> config)
+        public MiddlewareRequestTimeout(IServiceProvider serviceProvider, IOptions<Config> config)
         {
-            this.log = _log;
+            this.log = (ILoggerManager)serviceProvider.GetService(typeof(ILoggerManager));
             this.config = config.Value;
         }
 

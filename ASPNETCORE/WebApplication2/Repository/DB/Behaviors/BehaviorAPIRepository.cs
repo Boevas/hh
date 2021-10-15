@@ -7,15 +7,18 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using WebApplication2.MiddleWare.LoggerManager;
 
 namespace WebApplication2.Models
 {
     public class BehaviorAPIRepository<T> : IRepository<T> where T : class
     {
+        private readonly ILoggerManager log;
+
         private readonly DbContext db;
         private readonly DbSet<T> dbs;
         
-        public BehaviorAPIRepository(DbContext _db)
+        public BehaviorAPIRepository(DbContext _db, IServiceProvider serviceProvider)
         {
             try
             {
@@ -28,10 +31,12 @@ namespace WebApplication2.Models
                         dbs = prop.GetValue(_db, null) as DbSet<T>;
                         break;
                     }
+
+                this.log = (ILoggerManager)serviceProvider.GetService(typeof(ILoggerManager));
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
             }
         }
 
@@ -46,7 +51,7 @@ namespace WebApplication2.Models
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
             }
         }
 
@@ -59,7 +64,7 @@ namespace WebApplication2.Models
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
             }
         }
         
@@ -73,7 +78,7 @@ namespace WebApplication2.Models
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return null;
             }
         }
@@ -85,7 +90,7 @@ namespace WebApplication2.Models
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return null;
             }
         }
@@ -97,7 +102,7 @@ namespace WebApplication2.Models
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return null;
             }
         }
@@ -112,7 +117,7 @@ namespace WebApplication2.Models
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return false;
             }
         }
@@ -127,7 +132,7 @@ namespace WebApplication2.Models
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return false;
             }
         }
@@ -142,7 +147,7 @@ namespace WebApplication2.Models
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().Error(ex.ToString());
+                log.LogError(ex.ToString());
                 return false;
             }
         }

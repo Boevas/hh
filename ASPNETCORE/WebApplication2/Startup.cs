@@ -38,7 +38,7 @@ namespace WebApplication2
 
                 //Log
                 {
-                    services.AddSingleton<ILoggerManager, LoggerManagerNLog>();
+                    services.AddSingleton<ILoggerManager, BehaviorsNLog>();
                 }
 
                 //BackgroundService with Cache
@@ -49,20 +49,29 @@ namespace WebApplication2
 
                 //Business
                 {
-                    services.AddDbContext<AppContextDB>((serviceProvider, options) =>
+                    //DbContext
                     {
-                        options.UseNpgsql(Configuration.GetSection("Project")["ConnectionString"]);
-                    });
+                        services.AddDbContext<AppContextDB>((serviceProvider, options) =>
+                        {
+                            options.UseNpgsql(Configuration.GetSection("Project")["ConnectionString"]);
+                        });
+                        services.AddScoped<DbContext, AppContextDB>();
+
+                    }
+                    
+                    //Behavior API Repository's
+                    {
+                        services.AddScoped<IRepository<User>, BehaviorAPIRepository<User>>();
+                        services.AddScoped<IRepository<Department>, BehaviorAPIRepository<Department>>();
+                    }
+
+                    //Behavior API Controller's
+                    {
+                        services.AddScoped<IApi<User>, BehaviorAPIController<User>>();
+                        services.AddScoped<IApi<Department>, BehaviorAPIController<Department>>();
+                    }
 
                     services.AddMvc();
-
-                    services.AddScoped<DbContext, AppContextDB>();
-                    services.AddScoped<IRepository<User>, BehaviorAPIRepository<User>>();
-                    services.AddScoped<IRepository<Department>, BehaviorAPIRepository<Department>>();
-
-                    services.AddScoped<IApi<User>, BehaviorAPIController<User>>();
-                    services.AddScoped<IApi<Department>, BehaviorAPIController<Department>>();
-
                     services.AddControllers();
                 }
 

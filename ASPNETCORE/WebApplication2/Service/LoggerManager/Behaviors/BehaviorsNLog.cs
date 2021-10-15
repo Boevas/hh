@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 namespace WebApplication2.MiddleWare.LoggerManager
 {
     using NLog;
-    public class LoggerManagerNLog : ILoggerManager
+    public class BehaviorsNLog : ILoggerManager
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
-        public LoggerManagerNLog()
+        public BehaviorsNLog()
         {
         }
         public void LogDebug(string message)
