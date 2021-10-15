@@ -4,7 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-public interface IStringParser
+
+namespace SimbirSoftTest.Classes
 {
-    Dictionary<string, int> GetReport();
+    public interface IStringParser
+    {
+        Dictionary<string, int> GetReport();
+    }
 }

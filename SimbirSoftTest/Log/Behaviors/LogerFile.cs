@@ -19,10 +19,10 @@ namespace SimbirSoftTest.Classes
         public Loger(string FilePath, Encoding encoding)
         {
             if (null == FilePath)
-                throw new ArgumentNullException("Задайте имя файла логирования", nameof(FilePath));
+                throw new ArgumentNullException(nameof(FilePath), "Задайте имя файла логирования");
 
             if (null == encoding)
-                throw new ArgumentNullException("Задайте кодировку", nameof(encoding));
+                throw new ArgumentNullException(nameof(encoding), "Задайте кодировку");
 
             sw = new StreamWriter(FilePath, true, encoding);
         }

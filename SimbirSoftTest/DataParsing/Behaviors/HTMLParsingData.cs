@@ -13,10 +13,7 @@ namespace SimbirSoftTest.Classes
 
         public HTMLParsingData(string URL)
         {
-            if (URL == null)
-                throw new ArgumentNullException("Задайте URL страницы", nameof(URL));
-
-            this.URL = URL;
+            this.URL = URL ?? throw new ArgumentNullException(nameof(URL), "Задайте URL страницы");
         }
 
         public string GetData()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,21 +9,14 @@ namespace SimbirSoftTest.Classes
 {
     public class StringParser: IStringParser
     {
-        private string Data;
-        private char[] Splitters;
-        private Dictionary<string, int> WordsCount = new Dictionary<string, int>();
+        private readonly string Data;
+        private readonly char[] Splitters;
+        private readonly Dictionary<string, int> WordsCount = new();
 
         public StringParser(string Data, char[] Splitters)
         {
-            if (null == Data)
-                throw new ArgumentNullException("Задайте данные Data", nameof(Data));
-
-            this.Data = Data;
-
-            if (null == Splitters)
-                throw new ArgumentNullException("Задайте список разделителей", nameof(Splitters));
-            
-            this.Splitters = Splitters;
+            this.Data = Data ?? throw new ArgumentNullException(nameof(Data), "Задайте данные Data");
+            this.Splitters = Splitters ?? throw new ArgumentNullException(nameof(Splitters), "Задайте список разделителей");
         }
 
         public Dictionary<string, int> GetReport()
