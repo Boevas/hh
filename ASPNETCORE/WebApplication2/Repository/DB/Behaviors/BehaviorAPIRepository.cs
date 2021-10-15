@@ -10,12 +10,12 @@ using System.Reflection;
 
 namespace WebApplication2.Models
 {
-    public class TemplateRepositoryDB<T> : IRepository<T> where T : class
+    public class BehaviorAPIRepository<T> : IRepository<T> where T : class
     {
         private readonly DbContext db;
         private readonly DbSet<T> dbs;
         
-        public TemplateRepositoryDB(DbContext _db)
+        public BehaviorAPIRepository(DbContext _db)
         {
             try
             {

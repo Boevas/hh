@@ -57,11 +57,11 @@ namespace WebApplication2
                     services.AddMvc();
 
                     services.AddScoped<DbContext, AppContextDB>();
-                    services.AddScoped<IRepository<User>, TemplateRepositoryDB<User>>();
-                    services.AddScoped<IRepository<Department>, TemplateRepositoryDB<Department>>();
+                    services.AddScoped<IRepository<User>, BehaviorAPIRepository<User>>();
+                    services.AddScoped<IRepository<Department>, BehaviorAPIRepository<Department>>();
 
-                    services.AddScoped<IApi<User>, APIController<User>>();
-                    services.AddScoped<IApi<Department>, APIController<Department>>();
+                    services.AddScoped<IApi<User>, BehaviorAPIController<User>>();
+                    services.AddScoped<IApi<Department>, BehaviorAPIController<Department>>();
 
                     services.AddControllers();
                 }

@@ -12,12 +12,12 @@ namespace WebApplication2.Controllers
 
     //[Route("api/[controller]")]
     //[ApiController]
-    public class APIController<T>: Controller, IApi<T>
+    public class BehaviorAPIController<T>: Controller, IApi<T>
     {
         private readonly IRepository<T> IRep;
         private readonly ILoggerManager log;
 
-        public APIController(IServiceProvider serviceProvider) : base()
+        public BehaviorAPIController(IServiceProvider serviceProvider) : base()
         {
             this.IRep = (IRepository<T>)serviceProvider.GetService(typeof(IRepository<T>));
             this.log = (ILoggerManager)serviceProvider.GetService(typeof(ILoggerManager));
