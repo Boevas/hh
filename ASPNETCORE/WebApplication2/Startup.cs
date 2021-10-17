@@ -14,6 +14,8 @@ using WebApplication2.Service;
 using Microsoft.Extensions.Caching.Memory;
 using WebApplication2.MiddleWare.LoggerManager;
 using WebApplication2.Config;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace WebApplication2
 {
@@ -30,6 +32,7 @@ namespace WebApplication2
             {
                 //appsettings.json -> ClassConfig Singleton
                 {
+
                     services.AddSingleton<IDatabaseConfig>((serviceProvider) =>
                     {
                         return Configuration.GetSection("Database").Get<DatabaseConfig>();
@@ -37,12 +40,21 @@ namespace WebApplication2
 
                     services.AddSingleton<IMiddlewareRequestConfig>((serviceProvider) =>
                     {
-                        return Configuration.GetSection("MiddlewareRequest").Get<MiddlewareRequestConfig>();
+                        var config = Configuration.GetSection("MiddlewareRequest").Get<MiddlewareRequestConfig>();
+                        if (false == Validator.TryValidateObject(config, new ValidationContext(config), new List<ValidationResult>(), true))
+                            throw new Exception("Not all settings are valid.");
+
+                        return config;
+
                     });
 
                     services.AddSingleton<IPeriodicBackgroundServiceConfig>((serviceProvider) =>
                     {
-                        return Configuration.GetSection("PeriodicBackgroundService").Get<PeriodicBackgroundServiceConfig>();
+                        var config = Configuration.GetSection("PeriodicBackgroundService").Get<PeriodicBackgroundServiceConfig>();
+                        if(false == Validator.TryValidateObject(config, new ValidationContext(config), new List<ValidationResult>(), true))
+                            throw new Exception("Not all settings are valid.");
+
+                        return config;
                     });
                 }
 
