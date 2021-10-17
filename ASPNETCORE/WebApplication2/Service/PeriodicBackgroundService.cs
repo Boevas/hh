@@ -12,19 +12,20 @@ using NLog;
 using NLog.Targets;
 using WebApplication2.MiddleWare.LoggerManager;
 using Microsoft.Extensions.Options;
+using WebApplication2.Config;
 
 namespace WebApplication2.Service
 {
     public class PeriodicBackgroundService : BackgroundService
     {
-        private readonly Config config;
+        private readonly IPeriodicBackgroundServiceConfig config;
         private readonly ILoggerManager log;
         private readonly IMemoryCache MemoryCache;
         
 
-        public PeriodicBackgroundService( ILoggerManager log, IMemoryCache memoryCache, IOptions<Config> config)
+        public PeriodicBackgroundService( ILoggerManager log, IMemoryCache memoryCache, IPeriodicBackgroundServiceConfig config)
         {
-            this.config = config.Value;
+            this.config = config;
             this.log = log;
             this.MemoryCache = memoryCache;
         }
@@ -43,7 +44,7 @@ namespace WebApplication2.Service
                     catch { }
                     finally
                     {
-                        await Task.Delay(config.PeriodicBackgroundServiceTimeoutMilliseconds, stoppingToken);
+                        await Task.Delay(config.TimeoutMilliseconds, stoppingToken);
                     }
                 }
             }

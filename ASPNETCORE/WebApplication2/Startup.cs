@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using WebApplication2.Service;
 using Microsoft.Extensions.Caching.Memory;
 using WebApplication2.MiddleWare.LoggerManager;
+using WebApplication2.Config;
 
 namespace WebApplication2
 {
@@ -27,13 +28,22 @@ namespace WebApplication2
         {
             try
             {
-                //appsettings.json -> Class Config & IOptions<Config>
+                //appsettings.json -> ClassConfig Singleton
                 {
-                    //Configuration.Bind ("Project", new Config());
-                    services.Configure<Config>(Configuration.GetSection("Project"));
-                    services.AddSingleton<Config>();
+                    services.AddSingleton<IDatabaseConfig>((serviceProvider) =>
+                    {
+                        return Configuration.GetSection("Database").Get<DatabaseConfig>();
+                    });
 
-                    services.AddOptions();
+                    services.AddSingleton<IMiddlewareRequestConfig>((serviceProvider) =>
+                    {
+                        return Configuration.GetSection("MiddlewareRequest").Get<MiddlewareRequestConfig>();
+                    });
+
+                    services.AddSingleton<IPeriodicBackgroundServiceConfig>((serviceProvider) =>
+                    {
+                        return Configuration.GetSection("PeriodicBackgroundService").Get<PeriodicBackgroundServiceConfig>();
+                    });
                 }
 
                 //Log
@@ -53,7 +63,7 @@ namespace WebApplication2
                     {
                         services.AddDbContext<AppContextDB>((serviceProvider, options) =>
                         {
-                            options.UseNpgsql(Configuration.GetSection("Project")["ConnectionString"]);
+                            options.UseNpgsql(Configuration.GetSection("Database")["ConnectionString"]);
                         });
                         services.AddScoped<DbContext, AppContextDB>();
 
@@ -77,7 +87,7 @@ namespace WebApplication2
 
                 //Middleware
                 {
-                    services.AddTransient<MiddlewareRequestTimeout>();
+                    services.AddTransient<MiddlewareRequest>();
                 }
             }
             catch (Exception ex)
@@ -86,20 +96,18 @@ namespace WebApplication2
             }
         }
 
-        public void Configure(IServiceProvider serviceProvider,IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             try
             {
                 if (env.IsDevelopment())
-                {
                     app.UseDeveloperExceptionPage();
-                }
-                //IApi<User> Iapi = (IApi<User>)serviceProvider.GetService(typeof(IApi<User>));
+                
                 app.UseRouting();
                 app.UseStaticFiles();
 
                 //Логирование запросов длительностью > XX сек.
-                app.UseMiddleware<MiddlewareRequestTimeout>();
+                app.UseMiddleware<MiddlewareRequest>();
 
                 app.UseEndpoints(endpoints =>
                 {
