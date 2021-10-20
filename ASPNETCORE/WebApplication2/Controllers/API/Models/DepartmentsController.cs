@@ -22,7 +22,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                return View(Get().Result);
+                return View("~/Views/Table/Table.cshtml", Get().Result);
             }
             catch (Exception ex)
             {
