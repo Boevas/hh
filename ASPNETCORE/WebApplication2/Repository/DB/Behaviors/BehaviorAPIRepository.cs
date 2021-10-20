@@ -111,9 +111,7 @@ namespace WebApplication2.Models
             try
             {
                 dbs.Add(obj);
-                await db.SaveChangesAsync();
-
-                return true;
+                return 1 == await db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -126,9 +124,7 @@ namespace WebApplication2.Models
             try
             {
                 dbs.Update(obj);
-                await db.SaveChangesAsync();
-
-                return true;
+                return 1 == await db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -141,9 +137,7 @@ namespace WebApplication2.Models
             try
             {
                 dbs.Remove(obj);
-                await db.SaveChangesAsync();
-
-                return true;
+                return 1 == await db.SaveChangesAsync();
             }
             catch (Exception ex)
             {

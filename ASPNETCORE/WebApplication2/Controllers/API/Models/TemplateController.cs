@@ -12,7 +12,7 @@ namespace WebApplication2.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class TemplateController<T> : IApi<T>
+    public class TemplateController<T> : Controller, IApi<T>
     {
         private readonly IApi<T> Iapi;
         private readonly ILoggerManager log;
