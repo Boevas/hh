@@ -123,7 +123,12 @@ namespace WebApplication2.Models
         {
             try
             {
-                dbs.Update(obj);
+                T old = await Get(obj);
+
+                foreach (PropertyInfo property in typeof(T).GetProperties().Where(p => p.CanWrite))
+                    property.SetValue(old, property.GetValue(obj, null), null);
+
+                dbs.Update(old);
                 return 1 == await db.SaveChangesAsync();
             }
             catch (Exception ex)
