@@ -83,14 +83,14 @@ namespace WebApplication2
                     
                     //Behavior API Repository's
                     {
-                        services.AddScoped<IRepository<User>, BehaviorAPIRepository<User>>();
-                        services.AddScoped<IRepository<Department>, BehaviorAPIRepository<Department>>();
+                        services.AddTransient<IRepository<User>, BehaviorAPIRepository<User>>();
+                        services.AddTransient<IRepository<Department>, BehaviorAPIRepository<Department>>();
                     }
 
                     //Behavior API Controller's
                     {
-                        services.AddScoped<IApi<User>, BehaviorAPIController<User>>();
-                        services.AddScoped<IApi<Department>, BehaviorAPIController<Department>>();
+                        services.AddTransient<IApi<User>, BehaviorAPIController<User>>();
+                        services.AddTransient<IApi<Department>, BehaviorAPIController<Department>>();
                     }
 
                     services.AddMvc();

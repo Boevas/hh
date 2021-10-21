@@ -51,5 +51,31 @@ namespace WebApplication2.Controllers
                 return null;
             }
         }
+        [HttpGet("/[controller]/[action]")]
+        public ViewResult Edit()
+        {
+            try
+            {
+                return View(Get().Result);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.ToString());
+                return null;
+            }
+        }
+        [HttpPost("/[controller]/[action]")]
+        public async Task<IActionResult> Edit([FromForm] Department department)
+        {
+            try
+            {
+                return await base.Put(department);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.ToString());
+                return null;
+            }
+        }
     }
 }
