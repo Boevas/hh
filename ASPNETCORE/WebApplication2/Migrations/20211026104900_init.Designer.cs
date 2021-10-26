@@ -9,7 +9,7 @@ using WebApplication2.Controllers;
 namespace WebApplication2.Migrations
 {
     [DbContext(typeof(AppContextDB))]
-    [Migration("20211026092911_init")]
+    [Migration("20211026104900_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,7 +23,9 @@ namespace WebApplication2.Migrations
             modelBuilder.Entity("WebApplication2.Models.Department", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -48,7 +50,9 @@ namespace WebApplication2.Migrations
             modelBuilder.Entity("WebApplication2.Models.User", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");

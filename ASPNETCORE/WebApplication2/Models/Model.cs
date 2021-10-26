@@ -10,8 +10,6 @@ namespace WebApplication2.Models
 {
     public class Model
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
     }
 }

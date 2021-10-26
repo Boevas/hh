@@ -16,7 +16,8 @@ namespace WebApplication2.Controllers
 
         public AppContextDB(DbContextOptions<AppContextDB> options) : base(options)
         {
-            Database.EnsureDeleted();
+            //Перед созданием миграций закоментить !!!
+            //Database.EnsureDeleted(); // <-don't touch this code
             //Database.EnsureCreated(); // <-don't touch this code
         }
 
