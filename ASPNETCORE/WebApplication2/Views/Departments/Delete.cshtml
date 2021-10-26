@@ -1,0 +1,10 @@
+﻿@Model IEnumerable<Department>
+    @foreach (Department department in Model)
+    {
+        <form method="post" action="~/Departments/Delete">
+            <label>Название:</label><br />
+            <input type="hidden" name="department.Id" value=@department.Id />
+            <input type="text" readonly name="department.Name" value=@department.Name /><br /><br />
+            <input type="submit" value="Удалить" />
+        </form>
+    }

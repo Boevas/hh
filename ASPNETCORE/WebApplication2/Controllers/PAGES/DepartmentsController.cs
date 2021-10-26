@@ -77,5 +77,33 @@ namespace WebApplication2.Controllers
                 return null;
             }
         }
+
+
+        [HttpGet("/[controller]/[action]")]
+        public ViewResult Delete()
+        {
+            try
+            {
+                return View(Get().Result);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.ToString());
+                return null;
+            }
+        }
+        [HttpPost("/[controller]/[action]")]
+        public async Task<IActionResult> Delete([FromForm] Department department)
+        {
+            try
+            {
+                return await base.Delete(department.Id);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.ToString());
+                return null;
+            }
+        }
     }
 }
