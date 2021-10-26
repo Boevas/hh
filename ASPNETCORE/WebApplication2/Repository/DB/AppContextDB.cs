@@ -17,7 +17,7 @@ namespace WebApplication2.Controllers
         public AppContextDB(DbContextOptions<AppContextDB> options) : base(options)
         {
             Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureCreated(); // <-don't touch this code
         }
 
 

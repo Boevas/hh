@@ -9,8 +9,8 @@ using WebApplication2.Controllers;
 namespace WebApplication2.Migrations
 {
     [DbContext(typeof(AppContextDB))]
-    [Migration("20210721231135_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211026092911_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
