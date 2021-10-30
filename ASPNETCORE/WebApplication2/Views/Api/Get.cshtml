@@ -18,10 +18,17 @@
         </tr>
 
 
-        foreach (Object dep in Model)
+        foreach (Object obj in Model)
         {
             <tr>
-                @await Html.PartialAsync("~/Views/Table/TableRow.cshtml", dep)
+                @{
+                    foreach (var prop in obj.GetType().GetProperties())
+                    {
+                        <th>
+                            @prop.GetValue(obj, null)
+                        </th>
+                    }
+                }
             </tr>
         }
     }

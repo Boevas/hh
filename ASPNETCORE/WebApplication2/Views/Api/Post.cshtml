@@ -1,0 +1,17 @@
+﻿@using System.Reflection
+@model Type
+
+<form method="post" action="Post">
+    @{ 
+    foreach (PropertyInfo prop in Model.GetProperties())
+        {
+            if ("ID" == @prop.Name.ToUpper())
+                continue;
+
+            <label>@prop.Name:</label><br />
+            <input type="text" name="@($"obj.{@prop.Name}")" /><br /><br /> 
+        } 
+    }
+    <input type="submit" value="Добавить" />
+</form>
+

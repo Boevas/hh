@@ -1,0 +1,23 @@
+﻿@using System.Reflection
+
+
+@model IEnumerable<Object>
+@{ foreach (Object o in Model)
+    {
+        <form method="post" action="Delete">
+            @{ foreach (PropertyInfo prop in o.GetType().GetProperties())
+                {
+
+                    if ("ID" == @prop.Name.ToUpper())
+                    {
+                        <input type="text" hidden name="@($"obj.{@prop.Name}")" value="@prop.GetValue(o, null)" /> 
+                        continue;
+                    }
+                    
+                    <label>@prop.Name:</label><input type="text" readonly name="@($"obj.{@prop.Name}")" value="@prop.GetValue(o, null)" /> 
+                } 
+            }
+            <input type="submit" value="Удалить" />
+        </form> 
+    } 
+}

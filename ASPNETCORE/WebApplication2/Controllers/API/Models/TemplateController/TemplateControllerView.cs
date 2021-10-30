@@ -9,14 +9,16 @@ using WebApplication2.MiddleWare.LoggerManager;
 //using Microsoft.Extensions.Logging;
 namespace WebApplication2.Controllers
 {
-    public partial class DepartmentsController
+    public class TemplateControllerView<T>: TemplateController<T>
     {
+        public TemplateControllerView(IServiceProvider serviceProvider) : base(serviceProvider) { }
+
         [HttpGet("/[controller]")]
-        public ViewResult Table()
+        new public ViewResult Get()
         {
             try
             {
-                return View("~/Views/Table/Table.cshtml", Get().Result);
+                return View("~/Views/Api/Get.cshtml", base.Get().Result);
             }
             catch (Exception ex)
             {
@@ -26,50 +28,11 @@ namespace WebApplication2.Controllers
         }
 
         [HttpGet("/[controller]/[action]")]
-        public IActionResult Add()
+        public IActionResult Post()
         {
             try
             {
-                return View();
-            }
-            catch (Exception ex)
-            {
-                log.LogError(ex.ToString());
-                return null;
-            }
-        }
-        [HttpPost("/[controller]/[action]")]
-        public async Task<IActionResult> Add([FromForm] Department department)
-        {
-            try
-            {
-                return await base.Post(department);
-            }
-            catch (Exception ex)
-            {
-                log.LogError(ex.ToString());
-                return null;
-            }
-        }
-        [HttpGet("/[controller]/[action]")]
-        public ViewResult Edit()
-        {
-            try
-            {
-                return View(Get().Result);
-            }
-            catch (Exception ex)
-            {
-                log.LogError(ex.ToString());
-                return null;
-            }
-        }
-        [HttpPost("/[controller]/[action]")]
-        public async Task<IActionResult> Edit([FromForm] Department department)
-        {
-            try
-            {
-                return await base.Put(department);
+                return View("~/Views/Api/Post.cshtml", typeof(T));
             }
             catch (Exception ex)
             {
@@ -78,13 +41,54 @@ namespace WebApplication2.Controllers
             }
         }
 
+        [HttpPost("/[controller]/[action]")]
+        new public async Task<IActionResult> Post([FromForm] T obj)
+        {
+            try
+            {
+                return await base.Post(obj);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.ToString());
+                return null;
+            }
+        }
+        
+        [HttpGet("/[controller]/[action]")]
+        public ViewResult Put()
+        {
+            try
+            {
+                return View("~/Views/Api/Put.cshtml", base.Get().Result);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.ToString());
+                return null;
+            }
+        }
+        
+        [HttpPost("/[controller]/[action]")]
+        new public async Task<IActionResult> Put([FromForm] T obj)
+        {
+            try
+            {
+                return await base.Put(obj);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.ToString());
+                return null;
+            }
+        }
 
         [HttpGet("/[controller]/[action]")]
         public ViewResult Delete()
         {
             try
             {
-                return View(Get().Result);
+                return View("~/Views/Api/Delete.cshtml", base.Get().Result);
             }
             catch (Exception ex)
             {
@@ -93,11 +97,11 @@ namespace WebApplication2.Controllers
             }
         }
         [HttpPost("/[controller]/[action]")]
-        public async Task<IActionResult> Delete([FromForm] Department department)
+        public async Task<IActionResult> Delete([FromForm] T obj)
         {
             try
             {
-                return await base.Delete(department.Id);
+                return await base.Delete((obj as Model).Id);
             }
             catch (Exception ex)
             {
