@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebApplication2.Models
 {
-    public class Department : Model
+    public class Department : ModelId
     {
         public string Name { get; set; }
     }

@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication2.Models
 {
-    public class Model
+    public class ModelId
     {
         public int Id { get; set; }
     }

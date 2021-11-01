@@ -86,7 +86,7 @@ namespace WebApplication2.Models
         {
             try
             {
-                 return await dbs.FirstOrDefaultAsync(x => (x as Model).Id == Id);
+                 return await dbs.FirstOrDefaultAsync(x => (x as ModelId).Id == Id);
             }
             catch (Exception ex)
             {
@@ -98,7 +98,7 @@ namespace WebApplication2.Models
         {
             try
             {
-                return await dbs.FirstOrDefaultAsync(x => (x as Model).Id == (obj as Model).Id);
+                return await dbs.FirstOrDefaultAsync(x => (x as ModelId).Id == (obj as ModelId).Id);
             }
             catch (Exception ex)
             {

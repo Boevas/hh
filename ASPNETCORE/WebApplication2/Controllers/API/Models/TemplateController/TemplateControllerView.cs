@@ -108,7 +108,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                if (await base.Delete((obj as Model).Id) is OkObjectResult)
+                if (await base.Delete((obj as ModelId).Id) is OkObjectResult)
                     return Redirect($"~/{this.GetType().Name.Replace("Controller", "")}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError, obj);
