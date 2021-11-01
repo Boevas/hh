@@ -12,16 +12,22 @@ using System.Reflection;
 //using Microsoft.Extensions.Logging;
 namespace WebApplication2.Controllers
 {
-    public class TemplateControllerView<T>: TemplateController<T>
+    public class TemplateControllerView<T> : Controller
     {
-        public TemplateControllerView(IServiceProvider serviceProvider) : base(serviceProvider) { }
+        private readonly IApi<T> Iapi;
+        protected readonly ILoggerManager log;
+        public TemplateControllerView(IServiceProvider serviceProvider)
+        {
+            this.Iapi = (IApi<T>)serviceProvider.GetService(typeof(IApi<T>));
+            this.log = (ILoggerManager)serviceProvider.GetService(typeof(ILoggerManager));
+        }
 
         [HttpGet("/[controller]")]
-        new public ViewResult Get()
+        public ViewResult Get()
         {
             try
             {
-                return View("~/Views/Api/Get.cshtml", base.Get().Result);
+                return View("~/Views/Api/Get.cshtml", Iapi.Get().Result);
             }
             catch (Exception ex)
             {
@@ -45,11 +51,11 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPost("/[controller]/[action]")]
-        new public async Task<IActionResult> Post([FromForm] T obj)
+        public async Task<IActionResult> Post([FromForm] T obj)
         {
             try
             {
-                if ( await base.Post(obj) is OkObjectResult)
+                if ( await Iapi.Post(obj) is OkObjectResult)
                     return Redirect($"~/{this.ControllerContext.ActionDescriptor.ControllerName}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError, obj);
@@ -66,7 +72,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                return View("~/Views/Api/Put.cshtml", base.Get().Result);
+                return View("~/Views/Api/Put.cshtml", Iapi.Get().Result);
             }
             catch (Exception ex)
             {
@@ -76,11 +82,11 @@ namespace WebApplication2.Controllers
         }
         
         [HttpPost("/[controller]/[action]")]
-        new public async Task<IActionResult> Put([FromForm] T obj)
+        public async Task<IActionResult> Put([FromForm] T obj)
         {
             try
             {
-                if (await base.Put(obj) is OkObjectResult)
+                if (await Iapi.Put(obj) is OkObjectResult)
                     return Redirect($"~/{this.ControllerContext.ActionDescriptor.ControllerName}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError, obj);
@@ -97,7 +103,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                return View("~/Views/Api/Delete.cshtml", base.Get().Result);
+                return View("~/Views/Api/Delete.cshtml", Iapi.Get().Result);
             }
             catch (Exception ex)
             {
@@ -110,7 +116,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                if (await base.Delete((obj as ModelId).Id) is OkObjectResult)
+                if (await Iapi.Delete((obj as ModelId).Id) is OkObjectResult)
                     return Redirect($"~/{this.ControllerContext.ActionDescriptor.ControllerName}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError, obj);

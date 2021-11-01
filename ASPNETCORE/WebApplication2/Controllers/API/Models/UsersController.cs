@@ -9,7 +9,7 @@ using WebApplication2.MiddleWare.LoggerManager;
 //using Microsoft.Extensions.Logging;
 namespace WebApplication2.Controllers
 {
-    public partial class UsersController : TemplateControllerView<User>
+    public class UsersController : TemplateControllerView<User>
     {
         public UsersController(IServiceProvider serviceProvider) : base(serviceProvider) { }
      }

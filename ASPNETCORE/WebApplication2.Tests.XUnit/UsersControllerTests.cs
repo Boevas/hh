@@ -20,7 +20,7 @@ namespace TestProject2
         public UsersControllerTests()
         {
             mockRepository = new Mock<IRepository<User>>();
-            //Controller = new UsersController(mockRepository.Object, new BehaviorsNLog());
+            Controller = new UsersController(mockRepository.Object, new BehaviorsNLog());
         }
 
         #region Test_Get
