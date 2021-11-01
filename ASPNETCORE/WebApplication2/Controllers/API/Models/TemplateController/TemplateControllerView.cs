@@ -21,7 +21,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                return View("~/Views/Api/Get.cshtml", base.Get().Result);
+                return View("~/Views/Api/Get.cshtml", Iapi.Get().Result);
             }
             catch (Exception ex)
             {
@@ -49,7 +49,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                if ( await base.Post(obj) is OkObjectResult)
+                if ( await Iapi.Post(obj) is OkObjectResult)
                     return Redirect($"~/{this.ControllerContext.ActionDescriptor.ControllerName}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError, obj);
@@ -66,7 +66,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                return View("~/Views/Api/Put.cshtml", base.Get().Result);
+                return View("~/Views/Api/Put.cshtml", Iapi.Get().Result);
             }
             catch (Exception ex)
             {
@@ -80,7 +80,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                if (await base.Put(obj) is OkObjectResult)
+                if (await Iapi.Put(obj) is OkObjectResult)
                     return Redirect($"~/{this.ControllerContext.ActionDescriptor.ControllerName}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError, obj);
@@ -97,7 +97,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                return View("~/Views/Api/Delete.cshtml", base.Get().Result);
+                return View("~/Views/Api/Delete.cshtml", Iapi.Get().Result);
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                if (await base.Delete((obj as ModelId).Id) is OkObjectResult)
+                if (await Iapi.Delete((obj as ModelId).Id) is OkObjectResult)
                     return Redirect($"~/{this.ControllerContext.ActionDescriptor.ControllerName}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError, obj);

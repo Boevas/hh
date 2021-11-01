@@ -14,7 +14,7 @@ namespace WebApplication2.Controllers
     [ApiController]
     public class TemplateController<T> : Controller, IApi<T>
     {
-        private readonly IApi<T> Iapi;
+        protected readonly IApi<T> Iapi;
         protected readonly ILoggerManager log;
         public TemplateController(IServiceProvider serviceProvider)
         {
