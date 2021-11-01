@@ -7,6 +7,8 @@ using WebApplication2.Models;
 using NLog;
 using WebApplication2.MiddleWare.LoggerManager;
 using Microsoft.AspNetCore.Http;
+using System.Reflection;
+
 //using Microsoft.Extensions.Logging;
 namespace WebApplication2.Controllers
 {
@@ -48,7 +50,7 @@ namespace WebApplication2.Controllers
             try
             {
                 if ( await base.Post(obj) is OkObjectResult)
-                    return Redirect($"~/{this.GetType().Name.Replace("Controller","")}");
+                    return Redirect($"~/{this.ControllerContext.ActionDescriptor.ControllerName}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError, obj);
             }
@@ -79,7 +81,7 @@ namespace WebApplication2.Controllers
             try
             {
                 if (await base.Put(obj) is OkObjectResult)
-                    return Redirect($"~/{this.GetType().Name.Replace("Controller", "")}");
+                    return Redirect($"~/{this.ControllerContext.ActionDescriptor.ControllerName}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError, obj);
             }
@@ -109,7 +111,7 @@ namespace WebApplication2.Controllers
             try
             {
                 if (await base.Delete((obj as ModelId).Id) is OkObjectResult)
-                    return Redirect($"~/{this.GetType().Name.Replace("Controller", "")}");
+                    return Redirect($"~/{this.ControllerContext.ActionDescriptor.ControllerName}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError, obj);
             }
