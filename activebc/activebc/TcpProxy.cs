@@ -14,9 +14,9 @@ namespace activebc
         private TcpClient Client;
         private readonly TcpClient Server = new();
         private readonly Сonfiguration Сonfiguration;
-        private readonly ILogger Log;
+        private readonly ILogger<TcpProxy> Log;
 
-        public TcpProxy(IConfiguration configuration, ILogger log)
+        public TcpProxy(IConfiguration configuration, ILogger<TcpProxy> log)
         {
             Сonfiguration = configuration.Get<Сonfiguration>();
             Log = log;
@@ -24,6 +24,7 @@ namespace activebc
 
         async public Task Start()
         {
+            Log.LogInformation($"Start service Proxy");
             var listner = new TcpListener(IPAddress.Parse(Сonfiguration.IPAddress), Сonfiguration.Port);
             while (true)
             {
