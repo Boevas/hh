@@ -1,0 +1,14 @@
+C:\HH\activebc\.vs\activebc\v16\lut\0\b\activebc\Debug\net5.0\activebc.exe
+C:\HH\activebc\.vs\activebc\v16\lut\0\b\activebc\Debug\net5.0\appsettings.json
+C:\HH\activebc\.vs\activebc\v16\lut\0\b\activebc\Debug\net5.0\activebc.deps.json
+C:\HH\activebc\.vs\activebc\v16\lut\0\b\activebc\Debug\net5.0\activebc.runtimeconfig.json
+C:\HH\activebc\.vs\activebc\v16\lut\0\b\activebc\Debug\net5.0\activebc.runtimeconfig.dev.json
+C:\HH\activebc\.vs\activebc\v16\lut\0\b\activebc\Debug\net5.0\activebc.dll
+C:\HH\activebc\.vs\activebc\v16\lut\0\b\activebc\Debug\net5.0\ref\activebc.dll
+C:\HH\activebc\.vs\activebc\v16\lut\0\i\activebc\Debug\net5.0\activebc.GeneratedMSBuildEditorConfig.editorconfig
+C:\HH\activebc\.vs\activebc\v16\lut\0\i\activebc\Debug\net5.0\activebc.AssemblyInfoInputs.cache
+C:\HH\activebc\.vs\activebc\v16\lut\0\i\activebc\Debug\net5.0\activebc.AssemblyInfo.cs
+C:\HH\activebc\.vs\activebc\v16\lut\0\i\activebc\Debug\net5.0\activebc.csproj.CopyComplete
+C:\HH\activebc\.vs\activebc\v16\lut\0\i\activebc\Debug\net5.0\activebc.dll
+C:\HH\activebc\.vs\activebc\v16\lut\0\i\activebc\Debug\net5.0\ref\activebc.dll
+C:\HH\activebc\.vs\activebc\v16\lut\0\i\activebc\Debug\net5.0\activebc.genruntimeconfig.cache
