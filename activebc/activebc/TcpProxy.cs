@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace activebc
 {
@@ -13,10 +14,12 @@ namespace activebc
         private TcpClient Client;
         private readonly TcpClient Server = new();
         private readonly Сonfiguration Сonfiguration;
+        private readonly ILogger Log;
 
-        public TcpProxy(IConfiguration configuration)
+        public TcpProxy(IConfiguration configuration, ILogger log)
         {
             Сonfiguration = configuration.Get<Сonfiguration>();
+            Log = log;
         }
 
         async public Task Start()
@@ -28,6 +31,7 @@ namespace activebc
                 {
                     listner.Start();
                     Client = await listner.AcceptTcpClientAsync();
+                    Log.LogInformation($"Connect client IP:{((IPEndPoint)Client.Client.RemoteEndPoint).Address}");
 
                     //Псевдо Балансировщик нагрузки
                     Server s;
@@ -37,6 +41,7 @@ namespace activebc
                     }
 
                     //Переадресация данных
+                    Log.LogInformation($"Client IP:{((IPEndPoint)Client.Client.RemoteEndPoint).Address} redirect to IP:{s.IPAdress} Port{s.Port}");
                     await Redirect(s.IPAdress, s.Port);
 
                     lock ("{F4C3660E-2FAF-43D8-A9A7-EEE34FAFB648}")
@@ -60,13 +65,20 @@ namespace activebc
 
         private async Task RedirectTask(TcpClient target, TcpClient destination)
         {
+            int ByteTotal=0;
             int bytesRead;
             byte[] recvbuf = new byte[8192];
             do
             {
                 bytesRead = await target.GetStream().ReadAsync(recvbuf.AsMemory(0, recvbuf.Length));
                 await destination.GetStream().WriteAsync(recvbuf.AsMemory(0, bytesRead));
+                ByteTotal += bytesRead;
             } while (bytesRead != 0);
+
+            Log.LogInformation
+                ($"Client IP:{((IPEndPoint)target.Client.RemoteEndPoint).Address}" +
+                $" send to Server IP:{((IPEndPoint)destination.Client.RemoteEndPoint).Address}" +
+                $" and Port:{((IPEndPoint)destination.Client.RemoteEndPoint).Port} bytes:{ByteTotal}");
         }
     }
 }

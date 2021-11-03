@@ -32,22 +32,6 @@ namespace activebc.tests
 
             json.Servers = new List<dynamic>() { server1, server2, server3 };
             string jsonString = JsonSerializer.Serialize(json);
-
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(jsonString)))
-            {
-                var configurationBuilder = new ConfigurationBuilder().AddJsonStream(ms);
-                var serviceProvider = new ServiceCollection()
-                               .AddLogging(logging =>
-                               {
-                                   logging.AddConsole();
-                               })
-                               .AddSingleton<IConfiguration>(configurationBuilder.Build())
-                               .AddSingleton<TcpProxy>()
-                               .BuildServiceProvider();
-
-                var proxyService = serviceProvider.GetService<TcpProxy>();
-                proxyService.Start().Wait();
-            }
         }
     }
 }
