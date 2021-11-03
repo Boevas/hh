@@ -19,7 +19,7 @@ namespace activebc
             Сonfiguration = configuration.Get<Сonfiguration>();
         }
 
-        async public void Start()
+        async public Task Start()
         {
             var listner = new TcpListener(IPAddress.Parse(Сonfiguration.IPAddress), Сonfiguration.Port);
             while (true)
@@ -27,14 +27,22 @@ namespace activebc
                 try
                 {
                     listner.Start();
-
                     Client = await listner.AcceptTcpClientAsync();
 
                     //Псевдо Балансировщик нагрузки
-                    Server s = Сonfiguration.Servers.OrderBy(x => x.CountrediRection).First();
+                    Server s;
+                    lock ("{F4C3660E-2FAF-43D8-A9A7-EEE34FAFB648}")
+                    {
+                        s = Сonfiguration.Servers.OrderBy(x => x.CountrediRection).First();
+                    }
 
                     //Переадресация данных
                     await Redirect(s.IPAdress, s.Port);
+
+                    lock ("{F4C3660E-2FAF-43D8-A9A7-EEE34FAFB648}")
+                    {
+                        s.CountrediRection = ++s.CountrediRection;
+                    }
                 }
                 finally
                 {

@@ -29,7 +29,7 @@ namespace activebc
                .BuildServiceProvider();
 
             var proxyService = serviceProvider.GetService<TcpProxy>();
-            proxyService.Start();
+            proxyService.Start().Wait();
         }
    }
 }
