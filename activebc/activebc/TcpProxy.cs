@@ -76,9 +76,10 @@ namespace activebc
             } while (bytesRead != 0);
 
             Log.LogInformation
-                ($"Client IP:{((IPEndPoint)target.Client.RemoteEndPoint).Address}" +
-                $" send to Server IP:{((IPEndPoint)destination.Client.RemoteEndPoint).Address}" +
-                $" and Port:{((IPEndPoint)destination.Client.RemoteEndPoint).Port} bytes:{ByteTotal}");
+                ($"IP:{((IPEndPoint)target.Client.RemoteEndPoint).Address}" +
+                $" Port:{((IPEndPoint)target.Client.RemoteEndPoint).Port}" +
+                $" send to IP:{((IPEndPoint)destination.Client.RemoteEndPoint).Address}" +
+                $" Port:{((IPEndPoint)destination.Client.RemoteEndPoint).Port} bytes:{ByteTotal}");
         }
     }
 }
