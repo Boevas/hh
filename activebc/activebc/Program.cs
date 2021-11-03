@@ -1,20 +1,23 @@
-﻿using System;
-using System.Net.Sockets;
-using System.Net;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.IO;
+using Serilog;
+using Serilog.Extensions.Logging;
 namespace activebc
 {
     class Program
     {
         static void Main(string[] args)
         {
+            //Log.Logger = new LoggerConfiguration().WriteTo.File("consoleapp.log").CreateLogger();
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File("Log.log")
+                .CreateLogger();
+
             var configurationBuilder = new ConfigurationBuilder()
                             .SetBasePath(Directory.GetCurrentDirectory())
                             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
@@ -23,6 +26,7 @@ namespace activebc
                .AddLogging(logging =>
                {
                    logging.AddConsole();
+                   logging.AddSerilog();
                })
                .AddSingleton<IConfiguration>(configurationBuilder.Build())
                .AddSingleton<TcpProxy>()
