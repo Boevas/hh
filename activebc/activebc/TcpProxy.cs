@@ -11,8 +11,8 @@ namespace activebc
 {
     public class TcpProxy
     {
-        private TcpClient Client;
-        private readonly TcpClient Server = new();
+        private TcpClient client;
+        private readonly TcpClient server = new();
         private readonly Сonfiguration Сonfiguration;
         private readonly ILogger<TcpProxy> Log;
 
@@ -21,47 +21,39 @@ namespace activebc
             Сonfiguration = configuration.Get<Сonfiguration>();
             Log = log;
         }
-
-        async public Task Start()
+        public TcpProxy(Сonfiguration configuration, ILogger<TcpProxy> log)
+        {
+            Сonfiguration = configuration;
+            Log = log;
+        }
+        public void Start()
         {
             Log.LogInformation($"Start service Proxy");
             var listner = new TcpListener(IPAddress.Parse(Сonfiguration.IPAddress), Сonfiguration.Port);
+            listner.Start();
             while (true)
-            {
-                try
-                {
-                    listner.Start();
-                    Client = await listner.AcceptTcpClientAsync();
-                    Log.LogInformation($"Connect client IP:{((IPEndPoint)Client.Client.RemoteEndPoint).Address}");
-
-                    //Псевдо Балансировщик нагрузки
-                    Server s;
-                    lock ("{F4C3660E-2FAF-43D8-A9A7-EEE34FAFB648}")
-                    {
-                        s = Сonfiguration.Servers.OrderBy(x => x.CountrediRection).First();
-                    }
-
-                    //Переадресация данных
-                    Log.LogInformation($"Client IP:{((IPEndPoint)Client.Client.RemoteEndPoint).Address} redirect to IP:{s.IPAdress} Port{s.Port}");
-                    await Redirect(s.IPAdress, s.Port);
-
-                    lock ("{F4C3660E-2FAF-43D8-A9A7-EEE34FAFB648}")
-                    {
-                        s.CountrediRection = ++s.CountrediRection;
-                    }
-                }
-                finally
-                {
-                    listner.Stop();
-                }
-            }
+                new TcpProxy(Сonfiguration, Log).Start(listner.AcceptTcpClient()).Wait();
         }
+        private async Task Start(TcpClient Client)
+        {
 
+            client = Client;
+            Log.LogInformation($"Connect client IP:{((IPEndPoint)client.Client.RemoteEndPoint).Address}");
+
+            //Псевдо Балансировщик нагрузки
+            Server s;
+            s = Сonfiguration.Servers.OrderBy(x => x.CountrediRection).First();
+
+            //Переадресация данных
+            Log.LogInformation($"Client IP:{((IPEndPoint)client.Client.RemoteEndPoint).Address} redirect to IP:{s.IPAdress} Port{s.Port}");
+            await Redirect(s.IPAdress, s.Port);
+            s.CountrediRection = ++s.CountrediRection;
+        }
         private async Task Redirect(string address, int port)
         {
-            await Server.ConnectAsync(address, port);
-            Task T1 = Task.Factory.StartNew(async () => { await RedirectTask(Client, Server); });
-            Task T2 = Task.Factory.StartNew(async () => { await RedirectTask(Server, Client); });
+            await server.ConnectAsync(address, port);
+            Task T1 = Task.Factory.StartNew(async () => { await RedirectTask(client, server); });
+            Task T2 = Task.Factory.StartNew(async () => { await RedirectTask(server, client); });
         }
 
         private async Task RedirectTask(TcpClient target, TcpClient destination)
