@@ -44,12 +44,11 @@ namespace activebc
                 Log.LogInformation($"Connect client IP:{((IPEndPoint)client.Client.RemoteEndPoint).Address}");
 
                 //Псевдо Балансировщик нагрузки
-                Server s;
-                s = Сonfiguration.Servers.OrderBy(x => x.CountrediRection).First();
+                Server s = Сonfiguration.Servers.OrderBy(x => x.CountrediRection).First();
 
                 //Переадресация данных
                 Log.LogInformation($"Client IP:{((IPEndPoint)client.Client.RemoteEndPoint).Address} redirect to IP:{s.IPAdress} Port{s.Port}");
-                await Redirect(s.IPAdress, s.Port);
+                await Redirect(s);
                 s.CountrediRection = ++s.CountrediRection;
             }
             catch (Exception ex)
@@ -57,12 +56,12 @@ namespace activebc
                 Log.LogError(ex, ex.Message);
             }
         }
-        private async Task Redirect(string address, int port)
+        private async Task Redirect(Server s)
         {
             try
             { 
                 server = new();
-                await server.ConnectAsync(address, port);
+                await server.ConnectAsync(s.IPAdress, s.Port);
                 Task T1 = Task.Factory.StartNew(async () => { await RedirectTask(client, server); });
                 await Task.Factory.StartNew(async () => { await RedirectTask(server, client); });
             }
