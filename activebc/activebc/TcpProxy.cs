@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace activebc
 {
@@ -41,13 +42,13 @@ namespace activebc
             try
             { 
                 client = Client;
-                Log.LogInformation($"Connect client IP:{((IPEndPoint)client.Client.RemoteEndPoint).Address}");
+                Log.LogInformation($"Connect client IP:{((IPEndPoint)client?.Client?.RemoteEndPoint)?.Address}");
 
                 //Псевдо Балансировщик нагрузки
                 Server s = Сonfiguration.Servers.OrderBy(x => x.CountrediRection).First();
 
                 //Переадресация данных
-                Log.LogInformation($"Client IP:{((IPEndPoint)client.Client.RemoteEndPoint).Address} redirect to IP:{s.IPAdress} Port{s.Port}");
+                Log.LogInformation($"Client IP:{((IPEndPoint)client?.Client?.RemoteEndPoint)?.Address} redirect to IP:{s.IPAdress} Port{s.Port}");
                 await Redirect(s);
                 s.CountrediRection = ++s.CountrediRection;
             }
@@ -75,8 +76,8 @@ namespace activebc
         private async Task RedirectTask(TcpClient target, TcpClient destination)
         {
             try
-            { 
-                int ByteTotal=0;
+            {
+                int ByteTotal = 0;
                 int bytesRead;
                 byte[] recvbuf = new byte[8192];
                 do
@@ -84,13 +85,17 @@ namespace activebc
                     bytesRead = await target.GetStream().ReadAsync(recvbuf.AsMemory(0, recvbuf.Length));
                     await destination.GetStream().WriteAsync(recvbuf.AsMemory(0, bytesRead));
                     ByteTotal += bytesRead;
-                } while (0!= bytesRead);
+                } while (0 != bytesRead);
 
                 Log.LogInformation
-                    ($"IP:{((IPEndPoint)target.Client.RemoteEndPoint).Address}" +
-                    $" Port:{((IPEndPoint)target.Client.RemoteEndPoint).Port}" +
-                    $" send to IP:{((IPEndPoint)destination.Client.RemoteEndPoint).Address}" +
-                    $" Port:{((IPEndPoint)destination.Client.RemoteEndPoint).Port} bytes:{ByteTotal}");
+                    ($"IP:{((IPEndPoint)target?.Client?.RemoteEndPoint)?.Address}" +
+                    $" Port:{((IPEndPoint)target?.Client?.RemoteEndPoint)?.Port}" +
+                    $" send to IP:{((IPEndPoint)destination?.Client?.RemoteEndPoint)?.Address}" +
+                    $" Port:{((IPEndPoint)destination?.Client?.RemoteEndPoint)?.Port} bytes:{ByteTotal}");
+            }
+            catch (IOException ex)
+            {
+                Log.LogWarning(ex, ex.Message);
             }
             catch (Exception ex)
             {
