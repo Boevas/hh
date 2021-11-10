@@ -63,7 +63,8 @@ namespace activebc
                 server = new();
                 await server.ConnectAsync(s.IPAdress, s.Port);
                 Task T1 = Task.Factory.StartNew(async () => { await RedirectTask(client, server); });
-                await Task.Factory.StartNew(async () => { await RedirectTask(server, client); });
+                Task T2 = Task.Factory.StartNew(async () => { await RedirectTask(server, client); });
+                Task.WaitAll(T1, T2);
             }
             catch (Exception ex)
             {
@@ -83,7 +84,7 @@ namespace activebc
                     bytesRead = await target.GetStream().ReadAsync(recvbuf.AsMemory(0, recvbuf.Length));
                     await destination.GetStream().WriteAsync(recvbuf.AsMemory(0, bytesRead));
                     ByteTotal += bytesRead;
-                } while (target.GetStream().DataAvailable);
+                } while (0!= bytesRead);
 
                 Log.LogInformation
                     ($"IP:{((IPEndPoint)target.Client.RemoteEndPoint).Address}" +
