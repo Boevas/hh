@@ -23,7 +23,7 @@ namespace ServerPipeline
             Сonfiguration = configuration.Get<Сonfiguration>();
             Log = log;
         }
-        public void Start()
+        async public Task Start()
         {
             try
             {
@@ -34,7 +34,10 @@ namespace ServerPipeline
                 listenSocket.Bind(new IPEndPoint(IPAddress.Parse(Сonfiguration.IPAddress), Сonfiguration.Port));
                 listenSocket.Listen(Сonfiguration.SocketListenbacklog);
                 while (true)
-                    ProcessLinesAsync(listenSocket.Accept()).Wait();
+                {
+                    var socket = await listenSocket.AcceptAsync();
+                    _ = ProcessLinesAsync(socket);
+                }
             }
             catch (Exception ex)
             {

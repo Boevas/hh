@@ -33,7 +33,7 @@ namespace ServerPipeline
                .BuildServiceProvider();
 
             var proxyService = serviceProvider.GetService<Pipeline>();
-            proxyService.Start();
+            proxyService.Start().Wait();
         }
    }
 }
