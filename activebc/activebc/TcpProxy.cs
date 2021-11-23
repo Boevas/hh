@@ -63,9 +63,9 @@ namespace activebc
             { 
                 server = new();
                 await server.ConnectAsync(s.IPAdress, s.Port);
-                Task T1 = Task.Factory.StartNew(async () => { await RedirectTask(client, server); });
-                Task T2 = Task.Factory.StartNew(async () => { await RedirectTask(server, client); });
-                Task.WaitAll(T1, T2);
+                Task T1 = Task.Factory.StartNew(async () => { await RedirectTask(client, server); }, TaskCreationOptions.LongRunning);
+                Task T2 = Task.Factory.StartNew(async () => { await RedirectTask(server, client); }, TaskCreationOptions.LongRunning);
+                await Task.WhenAll(T1, T2);
             }
             catch (Exception ex)
             {
