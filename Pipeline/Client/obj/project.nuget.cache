@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "GsZTbiFjyY6aWaPk4VeTvaC0Atbsey56LB3EGIM+8PkH8TOI23c7/FlLzw2Gh8V1dZKjIG4vx62voECVe3/yOg==",
+  "success": true,
+  "projectFilePath": "C:\\HH\\Pipeline\\Client\\ClientPipeline.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Alex\\.nuget\\packages\\system.io.pipelines\\4.5.0\\system.io.pipelines.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

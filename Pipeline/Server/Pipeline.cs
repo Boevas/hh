@@ -68,6 +68,10 @@ namespace ServerPipeline
 
                 Log.LogInformation($"[{socket.RemoteEndPoint}]: disconnected");
             }
+            catch (IOException ex)
+            {
+                Log.LogWarning(ex, ex.Message);
+            }
             catch (Exception ex)
             {
                 Log.LogError(ex, ex.Message);
