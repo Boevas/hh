@@ -32,8 +32,8 @@ namespace ServerPipeline
                .AddSingleton<Pipeline>()
                .BuildServiceProvider();
 
-            var proxyService = serviceProvider.GetService<Pipeline>();
-            proxyService.Start().Wait();
+            var PipelineService = serviceProvider.GetService<Pipeline>();
+            PipelineService.Start().Wait();
         }
    }
 }
