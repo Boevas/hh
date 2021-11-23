@@ -9,9 +9,10 @@
 /activebc/.vs/activebc
 /activebc/activebc.tests/.vs/activebc.tests/DesignTimeBuild
 /activebc/activebc.tests/.vs/activebc.tests/v16
-/Pipeline/Client/.vs
+/Pipeline/Client/.vs/ClientPipeline/v16
 /Pipeline/Client/bin
 /Pipeline/Client/obj
-/Pipeline/Server/.vs
+/Pipeline/Client/obj/Debug/net5.0
+/Pipeline/Server/.vs/ServerPipeline/v16
 /Pipeline/Server/bin
 /Pipeline/Server/obj
