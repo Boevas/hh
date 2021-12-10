@@ -16,7 +16,7 @@ namespace TestProject2
     {
         private readonly Mock<IRepository<User>> mockRepository;
         private readonly UsersController Controller;
-        //test
+        //test2
         public UsersControllerTests()
         {
             mockRepository = new Mock<IRepository<User>>();

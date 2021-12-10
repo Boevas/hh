@@ -6,7 +6,6 @@ C:\HH\Pipeline\Client\bin\Debug\net5.0\ClientPipeline.dll
 C:\HH\Pipeline\Client\bin\Debug\net5.0\ref\ClientPipeline.dll
 C:\HH\Pipeline\Client\bin\Debug\net5.0\ClientPipeline.pdb
 C:\HH\Pipeline\Client\bin\Debug\net5.0\System.IO.Pipelines.dll
-C:\HH\Pipeline\Client\obj\Debug\net5.0\ClientPipeline.csprojAssemblyReference.cache
 C:\HH\Pipeline\Client\obj\Debug\net5.0\ClientPipeline.GeneratedMSBuildEditorConfig.editorconfig
 C:\HH\Pipeline\Client\obj\Debug\net5.0\ClientPipeline.AssemblyInfoInputs.cache
 C:\HH\Pipeline\Client\obj\Debug\net5.0\ClientPipeline.AssemblyInfo.cs
